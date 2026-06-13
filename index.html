@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Función Matemática: La Máquina Expendedora</title>
+    <title>UAI - Laboratorio de Cálculo: Concepto de Función</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
@@ -40,19 +40,57 @@
                 radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
         }
 
+        /* --- Nueva Cabecera Institucional (Dark Mode) --- */
         header {
-            text-align: center;
-            margin-bottom: 3rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 2.5rem;
             animation: fadeIn 1s ease-out;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        .institution-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .uai-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .career-info {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
             background: linear-gradient(to right, #60a5fa, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
+            margin-top: 0.5rem;
+            text-align: center;
             letter-spacing: -0.02em;
         }
 
@@ -462,24 +500,30 @@
 <body>
 
     <header>
-        <h1>Concepto de Función</h1>
-        <div class="team-badge">
-            <span>Grupo:</span>
-            <strong>Nadia, More, Jenifer, Octavio, Rodrigo</strong>
+        <div class="header-top">
+            <div class="institution-info">
+                <span class="uai-brand">Universidad Abierta Interamericana (UAI)</span>
+                <span class="career-info">Licenciatura en Matemática &bull; Laboratorio de Cálculo</span>
+            </div>
+            <div class="team-badge">
+                <span>Grupo:</span>
+                <strong>Octavio Russo, Morena Rivero, Nadia Porciani, Jenifer Aguirre, Rodrigo Vidal</strong>
+            </div>
         </div>
+        <h1>Modelización de Funciones</h1>
     </header>
 
     <div class="layout">
         <div class="info-panel">
             <div class="glass-card explanation">
                 <h2>La Analogía de la Máquina</h2>
-                <p>Una <strong>función matemática</strong> es un mecanismo que transforma elementos de un conjunto de origen en un conjunto de destino.</p>
-                <p>La regla de oro es la <span class="highlight-text">Unicidad</span>: para un elemento de origen válido, la máquina <strong>siempre debe devolver el mismo resultado</strong>.</p>
-                <p>Usa el panel para probarlo. Nota cómo <code class="math-symbol">A1</code> y <code class="math-symbol">A2</code> pueden dar el mismo producto (eso es válido), pero si un mismo botón da cosas distintas, la relación se rompe.</p>
+                <p>En el cálculo formal, una <strong>función (f)</strong> es una regla de correspondencia que asigna a cada elemento de un conjunto de partida (Dominio) un único elemento de un conjunto de llegada (Codominio).</p>
+                <p>El criterio fundamental es la <span class="highlight-text">Unicidad</span>: la variable independiente <em>x</em> no puede bifurcarse en múltiples imágenes simultáneas.</p>
+                <p><strong>Ensayo de Laboratorio:</strong> Alterna entre los modos. Observa cómo al presionar el botón <code class="math-symbol">A1</code> en el sistema roto se viola la ley de unicidad matemática, simulando una relación que deja de ser función.</p>
             </div>
 
             <div class="console-log">
-                <h3><span>Terminal Matemática</span> <span id="log-count">0 registros</span></h3>
+                <h3><span>Registro de Ensayos</span> <span id="log-count">0 registros</span></h3>
                 <ul id="log-list">
                     </ul>
             </div>
@@ -491,11 +535,11 @@
                 <div class="mode-indicator"></div>
                 <button class="mode-btn active" onclick="setMode('correct')">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    Función Válida
+                    Sistema Estable
                 </button>
                 <button class="mode-btn" onclick="setMode('broken')">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                    Máquina Rota
+                    Falla de Unicidad
                 </button>
             </div>
 
@@ -516,7 +560,7 @@
                     
                     <div>
                         <div class="screen-container">
-                            <div class="lcd-screen" id="lcd">SISTEMA OK<br>ESPERANDO...</div>
+                            <div class="lcd-screen" id="lcd">SISTEMA OK<br>CALIBRADO</div>
                         </div>
                         <div class="keypad">
                             <button class="btn-key" onclick="pressKey('A1')">A1</button>
@@ -533,35 +577,35 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Concepto Formal</th>
-                        <th>Analogía en la Interfaz</th>
+                        <th>Concepto Matemático</th>
+                        <th>Analogía en el Sistema</th>
                         <th>Representación</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><strong>Función (<span class="math-symbol">f</span>)</strong></td>
-                        <td>El circuito lógico de la expendedora.</td>
-                        <td>Asignación de un botón a un producto.</td>
+                        <td>Regla algorítmica de asignación interna.</td>
+                        <td>El circuito lógico de la máquina.</td>
                     </tr>
                     <tr>
-                        <td><strong>Dominio (<span class="math-symbol">X</span>)</strong></td>
-                        <td>Los botones disponibles.</td>
+                        <td><strong>Dominio (<span class="math-symbol">Dom f</span>)</strong></td>
+                        <td>Conjunto de variables de entrada admisibles.</td>
                         <td><span class="math-symbol">{A1, A2, B1, B2}</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Codominio (<span class="math-symbol">Y</span>)</strong></td>
-                        <td>Los productos dentro de la máquina.</td>
+                        <td><strong>Codominio (<span class="math-symbol">Cod f</span>)</strong></td>
+                        <td>Universo total de elementos de salida.</td>
                         <td><span class="math-symbol">{🍫, 🍟, 🥤}</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Variable (<span class="math-symbol">x</span>)</strong></td>
-                        <td>El botón que el usuario presiona.</td>
+                        <td><strong>Variable Independiente (<span class="math-symbol">x</span>)</strong></td>
+                        <td>Estímulo o entrada seleccionada.</td>
                         <td>Ej: <span class="math-symbol">x = A1</span></td>
                     </tr>
                     <tr>
                         <td><strong>Imagen (<span class="math-symbol">f(x)</span>)</strong></td>
-                        <td>El producto despachado.</td>
+                        <td>Resultado unívoco del procesamiento.</td>
                         <td>Ej: <span class="math-symbol">f(A1) = 🍫</span></td>
                     </tr>
                 </tbody>
@@ -604,12 +648,12 @@
             if(isBroken) {
                 toggleContainer.classList.add('mode-broken');
                 btns[1].classList.add('active');
-                lcd.innerHTML = "<span class='glitch'>FALLO DE<br>UNICIDAD</span>";
+                lcd.innerHTML = "<span class='glitch'>ALERTA SEMA:<br>ANOMALÍA</span>";
                 gsap.to(lcd, {color: "var(--danger)", duration: 0.3});
             } else {
                 toggleContainer.classList.remove('mode-broken');
                 btns[0].classList.add('active');
-                lcd.innerHTML = "SISTEMA OK<br>RESTAURADO";
+                lcd.innerHTML = "SISTEMA ESTABLE<br>CALIBRADO";
                 lcd.classList.remove('glitch');
                 gsap.to(lcd, {color: "var(--success)", duration: 0.3});
             }
@@ -648,7 +692,7 @@
                 } else {
                     result = products[code];
                 }
-                lcd.innerHTML = `<span class='glitch'>ERR: MULTI<br>DESTINO</span>`;
+                lcd.innerHTML = `<span class='glitch'>ERR: MULTI<br>IMAGEN</span>`;
             }
 
             // Despachar producto animado
@@ -668,7 +712,7 @@
 
         function addLog(code, result, isStable) {
             logCount++;
-            logCounter.innerText = `${logCount} registro${logCount!==1?'s':''}`;
+            logCounter.innerText = `${logCount} ensayo${logCount!==1?'s':''}`;
 
             const li = document.createElement('li');
             li.className = `log-entry ${isStable && !isBroken ? 'success' : 'error'}`;
@@ -677,9 +721,9 @@
             
             let logText = `<span style="color:var(--text-muted)">[${time}]</span> `;
             if(isStable && !isBroken) {
-                logText += `Evaluación exitosa: <span style="color:#fff">f(${code}) = ${result}</span>`;
+                logText += `Mapeo unívoco: <span style="color:#fff">f(${code}) = ${result}</span> ✓`;
             } else if (!isStable) {
-                logText += `Violación de unicidad: <span style="color:var(--danger)">f(${code}) = ${result}</span> (Fluctuante)`;
+                logText += `Fallo de asignación: <span style="color:var(--danger)">f(${code}) = ${result}</span> (Indeterminado) ✗`;
             } else {
                 logText += `Evaluación riesgosa: <span style="color:#fff">f(${code}) = ${result}</span>`;
             }
