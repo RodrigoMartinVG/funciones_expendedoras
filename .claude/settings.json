@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n -E \"fill|stroke|#[0-9a-fA-F]{3,6}|rgba\\\\\\(\" /c/Users/rodrigo/Documents/funciones_expendedoras/index.html)",
+      "Bash(sed '1d;$d')",
+      "Bash(node --check /tmp/check.js)"
+    ]
+  }
+}
