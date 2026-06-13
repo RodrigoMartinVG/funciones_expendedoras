@@ -3,7 +3,8 @@
     "allow": [
       "Bash(grep -n -E \"fill|stroke|#[0-9a-fA-F]{3,6}|rgba\\\\\\(\" /c/Users/rodrigo/Documents/funciones_expendedoras/index.html)",
       "Bash(sed '1d;$d')",
-      "Bash(node --check /tmp/check.js)"
+      "Bash(node --check /tmp/check.js)",
+      "Bash(curl -sSL -o gsap.min.js https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js)"
     ]
   }
 }
