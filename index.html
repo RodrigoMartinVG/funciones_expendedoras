@@ -173,7 +173,7 @@
     }
 
     /* validity examples */
-    .vex { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.25rem; }
+    .vex { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1.25rem; }
     .vbox {
       border-radius: 6px;
       padding: 1rem;
@@ -365,7 +365,42 @@
       position: relative;
       transition: border-color .4s;
     }
-    .vending.broken-machine { border-color: rgba(241,76,76,.18); }
+    .vending.broken-machine { border-color: rgba(241,76,76,.35); }
+
+    /* brand header */
+    .v-head {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      margin-bottom: 12px;
+      padding: 0 2px;
+    }
+    .v-led {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 8px var(--ok);
+      align-self: center;
+      flex-shrink: 0;
+      animation: led-blink 2.4s ease-in-out infinite;
+    }
+    .vending.broken-machine .v-led { background: var(--bad); box-shadow: 0 0 8px var(--bad); animation: led-blink .5s steps(2) infinite; }
+    @keyframes led-blink { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+    .v-brand {
+      font-family: var(--font-d);
+      font-weight: 700;
+      font-size: .95rem;
+      letter-spacing: .02em;
+      color: var(--text);
+    }
+    .v-sub {
+      font-family: var(--font-m);
+      font-size: .52rem;
+      letter-spacing: .14em;
+      color: var(--muted);
+      margin-left: auto;
+      text-transform: uppercase;
+    }
 
     /* accent strip */
     .v-strip {
@@ -384,14 +419,14 @@
       padding: 14px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 8px;
       border: 2px solid var(--surf3);
       box-shadow: inset 0 15px 30px rgba(0,0,0,.7);
       margin-bottom: 16px;
       position: relative;
       overflow: hidden;
-      min-height: 200px;
+      min-height: 300px;
     }
     /* glass reflection */
     .vitrina::before {
@@ -431,16 +466,30 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: center;
+      gap: 3px;
       z-index: 4;
-      padding-bottom: 4px;
+      padding-bottom: 2px;
     }
     .vitem-emoji {
-      font-size: 2.1rem;
+      font-size: 1.85rem;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,.6));
       line-height: 1;
       transition: transform .15s;
     }
+    /* product-delivery coil spring */
+    .coil {
+      width: 64%;
+      height: 8px;
+      border-radius: 2px;
+      background: repeating-linear-gradient(115deg, var(--surf3) 0 2px, transparent 2px 7px);
+      opacity: .6;
+      pointer-events: none;
+    }
+    /* existence violation: empty slot */
+    .vitem.empty-item .vitem-emoji { filter: grayscale(.4); animation: empty-flicker 1.5s ease-in-out infinite; }
+    .vitem.empty-item .coil { opacity: .2; }
+    @keyframes empty-flicker { 0%,100% { opacity: .85; } 50% { opacity: .3; } }
     .vitem.shake .vitem-emoji { animation: shk .4s; }
     @keyframes shk {
       0%,100% { transform: translateX(0); }
@@ -474,16 +523,19 @@
       display: grid;
       grid-template-columns: 1fr 1.35fr;
       gap: 14px;
-      align-items: start;
+      align-items: stretch;
     }
     .disp-wrap { display: flex; flex-direction: column; gap: 6px; }
     .disp-label { font-family: var(--font-m); font-size: .63rem; color: var(--muted); letter-spacing: .12em; text-align: center; text-transform: uppercase; }
+    .disp-flap { font-family: var(--font-m); font-size: .54rem; color: var(--muted); letter-spacing: .14em; text-align: center; opacity: .65; }
     .dispenser {
       background: rgba(0,0,0,.6);
-      height: 88px;
-      border-radius: 10px;
+      flex: 1;
+      min-height: 120px;
+      border-radius: 8px;
       border: 2px solid var(--surf3);
-      box-shadow: inset 0 15px 20px rgba(0,0,0,.7);
+      border-bottom: 4px solid #000;
+      box-shadow: inset 0 18px 26px rgba(0,0,0,.75);
       position: relative;
       display: flex;
       align-items: center;
@@ -549,6 +601,26 @@
     }
     .btn-key:hover { filter: brightness(1.25); color: var(--acc); box-shadow: 0 6px 18px rgba(79,193,255,.12); border-color: rgba(79,193,255,.35); }
     .btn-key:active { transform: translateY(2px); border-bottom-width: 1px; }
+
+    /* coin slot */
+    .coin-slot {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 1px;
+      padding: 6px 9px;
+      background: rgba(0,0,0,.28);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .coin-hole {
+      width: 24px; height: 5px;
+      border-radius: 3px;
+      background: #000;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,.18), 0 1px 0 rgba(255,255,255,.05);
+      flex-shrink: 0;
+    }
+    .coin-txt { font-family: var(--font-m); font-size: .54rem; letter-spacing: .1em; color: var(--muted); }
 
     /* ─── NOTATION BAR ───────────────────────────── */
     .notation-bar {
@@ -670,7 +742,7 @@
         <span>Para toda entrada válida, la función produce siempre el mismo resultado. Una misma entrada no puede generar dos salidas distintas. Una sola violación basta para que la relación deje de ser función.</span>
       </div>
 
-      <p>Explorá los dos modos de la máquina. En <span class="ic">Función Válida</span>, cada botón siempre despacha el mismo producto. En <span class="ic">Máquina Rota</span>, el botón <span class="ic">A1</span> se vuelve impredecible — viola la unicidad y la relación colapsa.</p>
+      <p>Explorá los dos modos de la máquina. En <span class="ic">Función Válida</span>, cada uno de los seis botones siempre despacha el mismo producto. En <span class="ic">Máquina Rota</span> aparecen <strong>dos fallas</strong> distintas: el botón <span class="ic">A1</span> se vuelve impredecible (viola la <strong>unicidad</strong>) y el botón <span class="ic">C2</span> deja de despachar (viola la <strong>existencia</strong>). Cualquiera de las dos basta para que la relación deje de ser función.</p>
 
       <div class="vex">
         <div class="vbox ok">
@@ -679,9 +751,14 @@
           <div class="vbox-note">Dos entradas distintas pueden dar la misma salida. Está permitido.</div>
         </div>
         <div class="vbox bad">
-          <div class="vbox-label">✗ Esto no es función</div>
+          <div class="vbox-label">✗ Falla de unicidad</div>
           <div class="vbox-math">f(A1) = 🍫<br>f(A1) = 🍟</div>
-          <div class="vbox-note">Una misma entrada con dos salidas distintas. Viola la unicidad.</div>
+          <div class="vbox-note">Una misma entrada con dos salidas distintas.</div>
+        </div>
+        <div class="vbox bad">
+          <div class="vbox-label">✗ Falla de existencia</div>
+          <div class="vbox-math">f(C2) = ∅</div>
+          <div class="vbox-note">Una entrada del dominio sin ninguna salida.</div>
         </div>
       </div>
   </div>
@@ -698,10 +775,10 @@
         </div>
 
         <!-- SVG Domain → Codomain diagram -->
-        <!-- Domain node centers: A1=y48, A2=y90, B1=y144, B2=y184 -->
-        <!-- Codomain node centers: 🍫=y68, 🍟=y118, 🥤=y174         -->
-        <!-- Arrow start x=92, Arrow end x=258                        -->
-        <svg id="map-svg" viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg">
+        <!-- Domain node centers:  A1=44 A2=88 B1=132 B2=176 C1=220 C2=264 -->
+        <!-- Codomain node centers: 🍫=58 🍟=120 🥤=182 🍪=244              -->
+        <!-- Arrow start x=96, Arrow end x=261                              -->
+        <svg id="map-svg" viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arr-ok"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
               <polygon points="0 0,8 3,0 6" fill="#4fc1ff" opacity=".7"/>
@@ -715,52 +792,51 @@
           </defs>
 
           <!-- Column labels -->
-          <text x="56"  y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#858585" letter-spacing="1.2">DOMINIO</text>
-          <text x="170" y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11"  fill="#4fc1ff" font-weight="600">f</text>
-          <text x="284" y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#858585" letter-spacing="1.2">IMAGEN</text>
+          <text x="56"  y="16" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#858585" letter-spacing="1.2">DOMINIO</text>
+          <text x="170" y="16" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11"  fill="#4fc1ff" font-weight="600">f</text>
+          <text x="284" y="16" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#858585" letter-spacing="1.2">IMAGEN</text>
 
           <!-- Domain nodes -->
-          <rect id="dn-A1" x="18" y="34" width="76" height="28" rx="7" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
-          <text x="56" y="52" text-anchor="middle" dominant-baseline="auto" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">A1</text>
+          <rect id="dn-A1" x="18" y="30"  width="76" height="28" rx="6" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="44"  text-anchor="middle" dominant-baseline="central" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">A1</text>
 
-          <rect id="dn-A2" x="18" y="76" width="76" height="28" rx="7" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
-          <text x="56" y="94" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">A2</text>
+          <rect id="dn-A2" x="18" y="74"  width="76" height="28" rx="6" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="88"  text-anchor="middle" dominant-baseline="central" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">A2</text>
 
-          <rect id="dn-B1" x="18" y="130" width="76" height="28" rx="7" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
-          <text x="56" y="148" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">B1</text>
+          <rect id="dn-B1" x="18" y="118" width="76" height="28" rx="6" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="132" text-anchor="middle" dominant-baseline="central" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">B1</text>
 
-          <rect id="dn-B2" x="18" y="170" width="76" height="28" rx="7" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
-          <text x="56" y="188" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">B2</text>
+          <rect id="dn-B2" x="18" y="162" width="76" height="28" rx="6" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="176" text-anchor="middle" dominant-baseline="central" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">B2</text>
+
+          <rect id="dn-C1" x="18" y="206" width="76" height="28" rx="6" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="220" text-anchor="middle" dominant-baseline="central" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">C1</text>
+
+          <rect id="dn-C2" x="18" y="250" width="76" height="28" rx="6" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="264" text-anchor="middle" dominant-baseline="central" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">C2</text>
 
           <!-- Codomain nodes -->
-          <circle id="cn-choco" cx="284" cy="68"  r="21" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
-          <text x="284" y="68"  text-anchor="middle" dominant-baseline="central" font-size="19">🍫</text>
+          <circle id="cn-choco"  cx="284" cy="58"  r="20" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
+          <text x="284" y="58"  text-anchor="middle" dominant-baseline="central" font-size="18">🍫</text>
 
-          <circle id="cn-fries" cx="284" cy="118" r="21" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
-          <text x="284" y="118" text-anchor="middle" dominant-baseline="central" font-size="19">🍟</text>
+          <circle id="cn-fries"  cx="284" cy="120" r="20" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
+          <text x="284" y="120" text-anchor="middle" dominant-baseline="central" font-size="18">🍟</text>
 
-          <circle id="cn-drink" cx="284" cy="174" r="21" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
-          <text x="284" y="174" text-anchor="middle" dominant-baseline="central" font-size="19">🥤</text>
+          <circle id="cn-drink"  cx="284" cy="182" r="20" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
+          <text x="284" y="182" text-anchor="middle" dominant-baseline="central" font-size="18">🥤</text>
+
+          <circle id="cn-cookie" cx="284" cy="244" r="20" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
+          <text x="284" y="244" text-anchor="middle" dominant-baseline="central" font-size="18">🍪</text>
 
           <!-- Default arrows (dim, always present) -->
-          <!-- A1 → 🍫 -->
-          <line class="arr" id="a-A1" data-to-y="68"
-            x1="96" y1="48" x2="261" y2="68"
-            stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
-          <!-- A2 → 🍫 -->
-          <line class="arr" id="a-A2" data-to-y="68"
-            x1="96" y1="90" x2="261" y2="68"
-            stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
-          <!-- B1 → 🍟 -->
-          <line class="arr" id="a-B1" data-to-y="118"
-            x1="96" y1="144" x2="261" y2="118"
-            stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
-          <!-- B2 → 🥤 -->
-          <line class="arr" id="a-B2" data-to-y="174"
-            x1="96" y1="184" x2="261" y2="174"
-            stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+          <line class="arr" id="a-A1" x1="96" y1="44"  x2="262" y2="58"  stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+          <line class="arr" id="a-A2" x1="96" y1="88"  x2="262" y2="58"  stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+          <line class="arr" id="a-B1" x1="96" y1="132" x2="262" y2="120" stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+          <line class="arr" id="a-B2" x1="96" y1="176" x2="262" y2="182" stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+          <line class="arr" id="a-C1" x1="96" y1="220" x2="262" y2="244" stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+          <line class="arr" id="a-C2" x1="96" y1="264" x2="262" y2="244" stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
 
-          <!-- Extra arrow layer (for broken A1 second destination) -->
+          <!-- Extra layer (broken-mode conflict / missing arrows) -->
           <g id="extra-arrows"></g>
         </svg>
       </div>
@@ -808,26 +884,50 @@
 
     <!-- Machine -->
     <div class="vending" id="vending">
+
+      <!-- Brand header -->
+      <div class="v-head">
+        <span class="v-led" id="v-led"></span>
+        <span class="v-brand">f(x)·MATIC</span>
+        <span class="v-sub">EXPENDEDORA DE FUNCIONES</span>
+      </div>
+
       <div class="v-strip" id="v-strip"></div>
 
-      <!-- Vitrina -->
+      <!-- Vitrina / glass display (6 slots) -->
       <div class="vitrina">
-        <div class="shelf-ln"></div>
+        <div class="shelf-ln" style="top:calc(33.33% - 1px)"></div>
+        <div class="shelf-ln" style="top:calc(66.66% - 1px)"></div>
+
         <div class="vitem" id="vi-a1">
           <span class="vitem-emoji" id="pe-a1">🍫</span>
+          <span class="coil"></span>
           <span class="vitem-code" id="pc-a1">A1</span>
         </div>
         <div class="vitem" id="vi-a2">
           <span class="vitem-emoji" id="pe-a2">🍫</span>
-          <span class="vitem-code">A2</span>
+          <span class="coil"></span>
+          <span class="vitem-code" id="pc-a2">A2</span>
         </div>
         <div class="vitem" id="vi-b1">
           <span class="vitem-emoji" id="pe-b1">🍟</span>
-          <span class="vitem-code">B1</span>
+          <span class="coil"></span>
+          <span class="vitem-code" id="pc-b1">B1</span>
         </div>
         <div class="vitem" id="vi-b2">
           <span class="vitem-emoji" id="pe-b2">🥤</span>
-          <span class="vitem-code">B2</span>
+          <span class="coil"></span>
+          <span class="vitem-code" id="pc-b2">B2</span>
+        </div>
+        <div class="vitem" id="vi-c1">
+          <span class="vitem-emoji" id="pe-c1">🍪</span>
+          <span class="coil"></span>
+          <span class="vitem-code" id="pc-c1">C1</span>
+        </div>
+        <div class="vitem" id="vi-c2">
+          <span class="vitem-emoji" id="pe-c2">🍪</span>
+          <span class="coil"></span>
+          <span class="vitem-code" id="pc-c2">C2</span>
         </div>
       </div>
 
@@ -838,6 +938,7 @@
         <div class="disp-wrap">
           <span class="disp-label">Salida · f(x)</span>
           <div class="dispenser" id="dispenser"></div>
+          <span class="disp-flap">▼ RETIRE AQUÍ ▼</span>
         </div>
         <div class="ctrl-wrap">
           <div class="screen-wrap">
@@ -848,6 +949,12 @@
             <button class="btn-key" onclick="pressKey('A2')">A2</button>
             <button class="btn-key" onclick="pressKey('B1')">B1</button>
             <button class="btn-key" onclick="pressKey('B2')">B2</button>
+            <button class="btn-key" onclick="pressKey('C1')">C1</button>
+            <button class="btn-key" onclick="pressKey('C2')">C2</button>
+          </div>
+          <div class="coin-slot">
+            <span class="coin-hole"></span>
+            <span class="coin-txt">INSERTE $ · SELECCIONE</span>
           </div>
         </div>
       </div>
@@ -864,17 +971,17 @@
   </div>
   <div class="notate-div"></div>
   <div class="notate-item">
-    <div class="notate-formula" style="color:var(--acc)">X = {A1, A2, B1, B2}</div>
+    <div class="notate-formula" style="color:var(--acc)">X = {A1, A2, B1, B2, C1, C2}</div>
     <div class="notate-label">Dominio (entradas)</div>
   </div>
   <div class="notate-div"></div>
   <div class="notate-item">
-    <div class="notate-formula" style="color:var(--ok)">Y = {🍫, 🍟, 🥤}</div>
+    <div class="notate-formula" style="color:var(--ok)">Y = {🍫, 🍟, 🥤, 🍪}</div>
     <div class="notate-label">Codominio (posibles salidas)</div>
   </div>
   <div class="notate-div"></div>
   <div class="notate-item">
-    <div class="notate-formula" style="color:var(--gold)">Im(f) = {🍫, 🍟, 🥤}</div>
+    <div class="notate-formula" style="color:var(--gold)">Im(f) = {🍫, 🍟, 🥤, 🍪}</div>
     <div class="notate-label">Imagen / Rango (salidas reales)</div>
   </div>
 </div>
@@ -902,12 +1009,12 @@
         <tr>
           <td>Dominio <span class="mt mt-b">X</span></td>
           <td>El conjunto de todos los botones que el usuario puede presionar.</td>
-          <td><span class="mt mt-b">{A1, A2, B1, B2}</span></td>
+          <td><span class="mt mt-b">{A1, A2, B1, B2, C1, C2}</span></td>
         </tr>
         <tr>
           <td>Codominio <span class="mt mt-g">Y</span></td>
           <td>Todos los productos que la máquina <em>podría</em> despachar (la vitrina completa).</td>
-          <td><span class="mt mt-g">{🍫, 🍟, 🥤}</span></td>
+          <td><span class="mt mt-g">{🍫, 🍟, 🥤, 🍪}</span></td>
         </tr>
         <tr>
           <td>Variable <span class="mt mt-b">x</span></td>
@@ -922,12 +1029,17 @@
         <tr>
           <td>Rango / Imagen de f <span class="mt mt-p">Im(f)</span></td>
           <td>Solo los productos que <em>realmente</em> son despachados; puede ser menor que el codominio.</td>
-          <td><span class="mt mt-p">{🍫, 🍟, 🥤}</span></td>
+          <td><span class="mt mt-p">{🍫, 🍟, 🥤, 🍪}</span></td>
         </tr>
         <tr>
-          <td>No es función <span class="mt mt-r">¬f</span></td>
-          <td>La máquina "rota": el botón A1 a veces da 🍟 y otras 🥤. La regla es inconsistente.</td>
+          <td>Falla de unicidad <span class="mt mt-r">¬f</span></td>
+          <td>La máquina "rota": el botón A1 a veces da 🍟, otras 🥤 o 🍪. Una entrada con varias salidas.</td>
           <td><span class="mt mt-r">f(A1) = ? (fluctuante)</span></td>
+        </tr>
+        <tr>
+          <td>Falla de existencia <span class="mt mt-r">¬f</span></td>
+          <td>La máquina "rota": el botón C2 no despacha nada. Hay una entrada del dominio sin salida.</td>
+          <td><span class="mt mt-r">f(C2) = ∅ (indefinido)</span></td>
         </tr>
       </tbody>
     </table>
@@ -942,14 +1054,19 @@
   let totalOk   = 0;
   let totalBad  = 0;
   let logTotal  = 0;
-  let a1Cycle   = 0; // alternates A1 output in broken mode: 🍟 / 🥤
+  let a1Cycle   = 0; // cycles A1 output in broken mode
 
-  const PRODUCTS = { A1:'🍫', A2:'🍫', B1:'🍟', B2:'🥤' };
-  const A1_CHAOS  = ['🍟', '🥤']; // always different from 🍫 to guarantee violation
+  // f : X → Y  (6 inputs, 4 outputs)
+  const PRODUCTS = { A1:'🍫', A2:'🍫', B1:'🍟', B2:'🥤', C1:'🍪', C2:'🍪' };
+
+  const UNIQ_KEY  = 'A1';            // broken: violates uniqueness (fluctuating output)
+  const EXIST_KEY = 'C2';            // broken: violates existence (no output)
+  const A1_CHAOS  = ['🍟','🥤','🍪']; // always different from 🍫 → guaranteed violation
 
   // SVG y-centers for domain & codomain nodes
-  const DOM_Y  = { A1: 48, A2: 90, B1: 144, B2: 184 };
-  const COD_Y  = { '🍫': 68, '🍟': 118, '🥤': 174 };
+  const DOM_Y = { A1:44, A2:88, B1:132, B2:176, C1:220, C2:264 };
+  const COD_Y = { '🍫':58, '🍟':120, '🥤':182, '🍪':244 };
+  const CN_BY_Y = { 58:'cn-choco', 120:'cn-fries', 182:'cn-drink', 244:'cn-cookie' };
 
   /* ── DOM refs ── */
   const lcd        = document.getElementById('lcd');
@@ -984,12 +1101,17 @@
       vstrip.classList.add('broken-strip');
       modeBtns[1].classList.add('active');
 
-      // A1 vitrina goes uncertain
+      // A1 → uniqueness violation (uncertain output)
       document.getElementById('vi-a1').classList.add('chaos-item');
       document.getElementById('pe-a1').textContent = '❓';
       document.getElementById('pc-a1').classList.add('broken-code');
 
-      setLcd(`<span class="glitch" style="color:var(--bad);text-shadow:0 0 6px var(--bad)">FALLO DE<br>UNICIDAD</span>`);
+      // C2 → existence violation (no output)
+      document.getElementById('vi-c2').classList.add('empty-item');
+      document.getElementById('pe-c2').textContent = '🚫';
+      document.getElementById('pc-c2').classList.add('broken-code');
+
+      setLcd(`<span class="glitch" style="color:var(--bad);text-shadow:0 0 6px var(--bad)">MÁQUINA ROTA<br>2 FALLAS</span>`);
       setMapStatus(false);
     } else {
       modeToggle.classList.remove('broken');
@@ -997,10 +1119,15 @@
       vstrip.classList.remove('broken-strip');
       modeBtns[0].classList.add('active');
 
-      // Restore A1 vitrina
+      // Restore A1
       document.getElementById('vi-a1').classList.remove('chaos-item');
       document.getElementById('pe-a1').textContent = '🍫';
       document.getElementById('pc-a1').classList.remove('broken-code');
+
+      // Restore C2
+      document.getElementById('vi-c2').classList.remove('empty-item');
+      document.getElementById('pe-c2').textContent = '🍪';
+      document.getElementById('pc-c2').classList.remove('broken-code');
 
       setLcd(`SISTEMA OK<br>RESTAURADO`);
       lcd.style.color = 'var(--ok)';
@@ -1030,45 +1157,59 @@
       setTimeout(() => vi.classList.remove('shake'), 420);
     }
 
-    let result, isStable;
+    let result, kind; // kind: 'ok' | 'uniq' | 'exist'
 
-    if (!broken || code !== 'A1') {
-      result   = PRODUCTS[code];
-      isStable = true;
+    if (broken && code === UNIQ_KEY) {
+      // Uniqueness violation: fluctuating output, never the stored 🍫
+      result = A1_CHAOS[a1Cycle % A1_CHAOS.length];
+      a1Cycle++;
+      kind   = 'uniq';
+      setLcd(`<span class="glitch" style="color:var(--bad);text-shadow:0 0 6px var(--bad)">ERR: MULTI<br>DESTINO</span>`);
+    } else if (broken && code === EXIST_KEY) {
+      // Existence violation: no output at all
+      result = null;
+      kind   = 'exist';
+      setLcd(`<span class="glitch" style="color:var(--bad);text-shadow:0 0 6px var(--bad)">ERR: SIN<br>SALIDA</span>`);
+    } else {
+      result = PRODUCTS[code];
+      kind   = 'ok';
       setLcd(`f(${code}) = ${result}`);
       lcd.style.color = 'var(--ok)';
       lcd.style.textShadow = '0 0 6px var(--ok)';
-    } else {
-      // Broken A1: alternates between 🍟 and 🥤 — never 🍫 → visible violation
-      result   = A1_CHAOS[a1Cycle % A1_CHAOS.length];
-      a1Cycle++;
-      isStable = false;
-      setLcd(`<span class="glitch" style="color:var(--bad);text-shadow:0 0 6px var(--bad)">ERR: MULTI<br>DESTINO</span>`);
     }
 
-    // Dispense animation
-    dispenser.innerHTML = `<div class="dispensed">${result}</div>`;
-    const dObj = dispenser.querySelector('.dispensed');
-    gsap.fromTo(dObj,
-      { y:-70, scale:.3, rotation:(Math.random()-.5)*55, opacity:0 },
-      { y:0, scale:1, rotation:0, opacity:1, duration:.65, ease:'bounce.out',
-        onComplete: () => { animating = false; }
-      }
-    );
+    // Dispense animation (or a void marker for the existence failure)
+    if (result === null) {
+      dispenser.innerHTML = `<div class="dispensed" style="color:var(--bad);font-size:2.2rem">∅</div>`;
+      const dObj = dispenser.querySelector('.dispensed');
+      gsap.fromTo(dObj, { scale:.4, opacity:0 }, { scale:1, opacity:.85, duration:.4, ease:'power2.out',
+        onComplete: () => { animating = false; } });
+    } else {
+      dispenser.innerHTML = `<div class="dispensed">${result}</div>`;
+      const dObj = dispenser.querySelector('.dispensed');
+      gsap.fromTo(dObj,
+        { y:-70, scale:.3, rotation:(Math.random()-.5)*55, opacity:0 },
+        { y:0, scale:1, rotation:0, opacity:1, duration:.65, ease:'bounce.out',
+          onComplete: () => { animating = false; }
+        }
+      );
+    }
 
-    // SVG diagram
-    animateArrows(code, result, isStable);
-
-    // Log
-    addLog(code, result, isStable);
+    // SVG diagram + log
+    animateArrows(code, result, kind);
+    addLog(code, result, kind);
   }
 
   /* ─────────────────────────────────────────────
-     animateArrows(code, result, stable)
-     Highlights the pressed key's arrow.
-     In broken mode, ALSO shows a dashed conflict arrow.
+     animateArrows(code, result, kind)
+     kind 'ok'    → green highlight
+     kind 'uniq'  → solid + dashed second destination
+     kind 'exist' → arrow truncated, marked ✗ (no image)
   ───────────────────────────────────────────── */
-  function animateArrows(code, result, stable) {
+  const SVGNS = 'http://www.w3.org/2000/svg';
+
+  function animateArrows(code, result, kind) {
+    const stable = (kind === 'ok');
     const arrows = document.querySelectorAll('#map-svg .arr');
 
     // Dim all
@@ -1076,79 +1217,91 @@
       a.setAttribute('stroke', '#4fc1ff');
       a.setAttribute('stroke-opacity', '.2');
       a.setAttribute('stroke-width', '1.5');
+      a.setAttribute('opacity', '1');
     });
 
-    // Brighten this key's arrow
     const mainArr = document.getElementById(`a-${code}`);
-    if (mainArr) {
-      mainArr.setAttribute('stroke', stable ? '#23d18b' : '#f14c4c');
-      mainArr.setAttribute('stroke-opacity', '.9');
-      mainArr.setAttribute('stroke-width', '2.8');
-    }
+    const dn      = document.getElementById(`dn-${code}`);
 
     // Highlight domain node
-    const dn = document.getElementById(`dn-${code}`);
     if (dn) {
       dn.setAttribute('stroke', stable ? '#23d18b' : '#f14c4c');
       dn.setAttribute('stroke-opacity', '.9');
     }
 
-    if (!stable) {
-      // A1 broken: draw a SECOND dashed arrow from A1 to the actual result
-      // This visually shows "one input → two destinations"
-      const existingToY = 68; // A1's stored destination (🍫)
-      const actualToY   = COD_Y[result] ?? 118;
+    if (kind === 'exist') {
+      // Existence violation: no image. Hide the arrow, draw a broken stub + ✗
+      if (mainArr) mainArr.setAttribute('opacity', '0');
 
-      if (actualToY !== existingToY) {
-        const dash = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        dash.setAttribute('x1', '96');
-        dash.setAttribute('y1', String(DOM_Y[code]));
-        dash.setAttribute('x2', '261');
-        dash.setAttribute('y2', String(actualToY));
-        dash.setAttribute('stroke', '#f14c4c');
-        dash.setAttribute('stroke-width', '2.5');
-        dash.setAttribute('stroke-opacity', '.85');
-        dash.setAttribute('stroke-dasharray', '5 3');
-        dash.setAttribute('marker-end', 'url(#arr-bad)');
-        extraArrows.appendChild(dash);
+      const stub = document.createElementNS(SVGNS, 'line');
+      stub.setAttribute('x1', '96');  stub.setAttribute('y1', String(DOM_Y[code]));
+      stub.setAttribute('x2', '156'); stub.setAttribute('y2', String(DOM_Y[code]));
+      stub.setAttribute('stroke', '#f14c4c');
+      stub.setAttribute('stroke-width', '2.2');
+      stub.setAttribute('stroke-opacity', '.8');
+      stub.setAttribute('stroke-dasharray', '5 4');
+      extraArrows.appendChild(stub);
 
-        // Pulse the codomain target node
-        const cnMap = { 68:'cn-choco', 118:'cn-fries', 174:'cn-drink' };
-        const targetNode = document.getElementById(cnMap[actualToY]);
-        if (targetNode) {
-          targetNode.setAttribute('stroke', '#f14c4c');
-          targetNode.setAttribute('stroke-opacity', '.9');
-        }
+      const x = document.createElementNS(SVGNS, 'text');
+      x.setAttribute('x', '176'); x.setAttribute('y', String(DOM_Y[code]));
+      x.setAttribute('text-anchor', 'middle');
+      x.setAttribute('dominant-baseline', 'central');
+      x.setAttribute('font-size', '16');
+      x.setAttribute('font-weight', '700');
+      x.setAttribute('fill', '#f14c4c');
+      x.textContent = '✗';
+      extraArrows.appendChild(x);
 
-        // Also mark the stored target node as conflicting
-        const storedNode = document.getElementById(cnMap[existingToY]);
-        if (storedNode) {
-          storedNode.setAttribute('stroke', '#f14c4c');
-          storedNode.setAttribute('stroke-opacity', '.9');
-        }
+      setTimeout(() => { extraArrows.innerHTML = ''; }, 2000);
 
-        setTimeout(() => {
-          if (dash.parentNode) dash.remove();
-          [targetNode, storedNode].forEach(n => {
-            if (n) {
-              n.setAttribute('stroke', '#4fc1ff');
-              n.setAttribute('stroke-opacity', '.35');
-            }
-          });
-        }, 2000);
-      }
     } else {
-      // Highlight the corresponding codomain node
-      const cnByY = { 68:'cn-choco', 118:'cn-fries', 174:'cn-drink' };
-      const toY   = COD_Y[result];
-      const cnEl  = document.getElementById(cnByY[toY]);
-      if (cnEl) {
-        cnEl.setAttribute('stroke', '#23d18b');
-        cnEl.setAttribute('stroke-opacity', '.9');
+      // Brighten this key's arrow
+      if (mainArr) {
+        mainArr.setAttribute('stroke', stable ? '#23d18b' : '#f14c4c');
+        mainArr.setAttribute('stroke-opacity', '.9');
+        mainArr.setAttribute('stroke-width', '2.8');
       }
-      setTimeout(() => {
-        if (cnEl) { cnEl.setAttribute('stroke', '#4fc1ff'); cnEl.setAttribute('stroke-opacity', '.35'); }
-      }, 1600);
+
+      if (kind === 'uniq') {
+        // Second conflicting destination: one input → two outputs
+        const storedToY = COD_Y[PRODUCTS[code]];   // A1's stored target (🍫)
+        const actualToY = COD_Y[result] ?? 120;
+
+        if (actualToY !== storedToY) {
+          const dash = document.createElementNS(SVGNS, 'line');
+          dash.setAttribute('x1', '96');  dash.setAttribute('y1', String(DOM_Y[code]));
+          dash.setAttribute('x2', '262'); dash.setAttribute('y2', String(actualToY));
+          dash.setAttribute('stroke', '#f14c4c');
+          dash.setAttribute('stroke-width', '2.5');
+          dash.setAttribute('stroke-opacity', '.85');
+          dash.setAttribute('stroke-dasharray', '5 3');
+          dash.setAttribute('marker-end', 'url(#arr-bad)');
+          extraArrows.appendChild(dash);
+
+          const targetNode = document.getElementById(CN_BY_Y[actualToY]);
+          const storedNode = document.getElementById(CN_BY_Y[storedToY]);
+          [targetNode, storedNode].forEach(n => {
+            if (n) { n.setAttribute('stroke', '#f14c4c'); n.setAttribute('stroke-opacity', '.9'); }
+          });
+
+          setTimeout(() => {
+            if (dash.parentNode) dash.remove();
+            [targetNode, storedNode].forEach(n => {
+              if (n) { n.setAttribute('stroke', '#4fc1ff'); n.setAttribute('stroke-opacity', '.35'); }
+            });
+          }, 2000);
+        }
+      } else {
+        // ok: highlight the corresponding codomain node
+        const cnEl = document.getElementById(CN_BY_Y[COD_Y[result]]);
+        if (cnEl) {
+          cnEl.setAttribute('stroke', '#23d18b');
+          cnEl.setAttribute('stroke-opacity', '.9');
+        }
+        setTimeout(() => {
+          if (cnEl) { cnEl.setAttribute('stroke', '#4fc1ff'); cnEl.setAttribute('stroke-opacity', '.35'); }
+        }, 1600);
+      }
     }
 
     // Reset after delay
@@ -1163,6 +1316,7 @@
       a.setAttribute('stroke', '#4fc1ff');
       a.setAttribute('stroke-opacity', '.4');
       a.setAttribute('stroke-width', '1.5');
+      a.setAttribute('opacity', '1');
       a.setAttribute('marker-end', 'url(#arr-ok)');
     });
   }
@@ -1177,21 +1331,23 @@
     mapStatus.className   = `status-pill ${valid ? 'sp-ok' : 'sp-bad'}`;
   }
 
-  function addLog(code, result, stable) {
+  function addLog(code, result, kind) {
     logTotal++;
-    if (stable || !broken) totalOk++; else totalBad++;
+    if (kind === 'ok') totalOk++; else totalBad++;
 
     const emptyEl = document.getElementById('log-empty');
     if (emptyEl) emptyEl.remove();
 
     const time = new Date().toLocaleTimeString('es-AR', { hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit' });
     const li   = document.createElement('li');
-    li.className = `log-entry ${(stable || !broken) ? 'ok' : 'bad'}`;
+    li.className = `log-entry ${kind === 'ok' ? 'ok' : 'bad'}`;
 
-    if (stable || !broken) {
+    if (kind === 'ok') {
       li.innerHTML = `<span style="color:var(--muted)">[${time}]</span> Evaluación → <span style="color:#9cdcfe">f(${code})</span> = <span style="color:var(--text)">${result}</span>`;
+    } else if (kind === 'uniq') {
+      li.innerHTML = `<span style="color:var(--muted)">[${time}]</span> <span style="color:var(--bad)">Unicidad</span> → <span style="color:#9cdcfe">f(${code})</span> ≠ ${PRODUCTS[code]} · dio <span style="color:var(--bad)">${result}</span>`;
     } else {
-      li.innerHTML = `<span style="color:var(--muted)">[${time}]</span> <span style="color:var(--bad)">Violación</span> → <span style="color:#9cdcfe">f(${code})</span> ≠ ${PRODUCTS[code]} · dio <span style="color:var(--bad)">${result}</span>`;
+      li.innerHTML = `<span style="color:var(--muted)">[${time}]</span> <span style="color:var(--bad)">Existencia</span> → <span style="color:#9cdcfe">f(${code})</span> = <span style="color:var(--bad)">∅ (sin salida)</span>`;
     }
 
     logList.insertBefore(li, logList.firstChild);
