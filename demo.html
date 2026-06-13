@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Función Matemática: La Máquina Expendedora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --success: #10b981;
+            --danger: #ef4444;
+            --machine-bg: #0b0f19;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .team-badge {
+            display: inline-flex;
+            gap: 10px;
+            background: var(--glass-bg);
+            padding: 8px 20px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            backdrop-filter: blur(10px);
+        }
+
+        .team-badge strong {
+            color: var(--text-main);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        @media (min-width: 1024px) {
+            .layout {
+                grid-template-columns: 1.2fr 1fr;
+            }
+        }
+
+        /* --- Panel de Teoría y Registro --- */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .glass-card {
+            background: var(--panel-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .explanation h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .explanation h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 24px;
+            background: var(--accent-blue);
+            border-radius: 4px;
+        }
+
+        .explanation p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-text {
+            color: var(--text-main);
+            font-weight: 600;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .console-log {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 250px;
+            overflow-y: auto;
+            font-family: 'Fira Code', monospace;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .console-log h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #log-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .log-entry {
+            font-size: 0.95rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.02);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 3px solid transparent;
+        }
+
+        .log-entry.success { border-left-color: var(--success); }
+        .log-entry.error { border-left-color: var(--danger); }
+
+        /* --- Máquina Expendedora --- */
+        .machine-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: var(--panel-bg);
+            padding: 6px;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .mode-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mode-btn.active {
+            color: var(--text-main);
+        }
+
+        .mode-indicator {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            height: calc(100% - 12px);
+            width: calc(50% - 6px);
+            background: var(--accent-blue);
+            border-radius: 8px;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.4s;
+            z-index: 0;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .mode-broken .mode-indicator {
+            transform: translateX(100%);
+            background: var(--danger);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .vending-machine {
+            background: linear-gradient(145deg, var(--panel-bg), var(--machine-bg));
+            width: 380px;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .vending-glass {
+            background: rgba(0, 0, 0, 0.4);
+            height: 220px;
+            border-radius: 12px;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 15px;
+            border: 2px solid #334155;
+            box-shadow: inset 0 10px 30px rgba(0,0,0,0.8);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vending-glass::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-20deg);
+            animation: shine 6s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        .shelf {
+            position: absolute;
+            bottom: 50%;
+            left: 10px; right: 10px;
+            height: 4px;
+            background: #334155;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .shelf.bottom { bottom: 10px; }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            z-index: 1;
+            padding-bottom: 5px;
+        }
+
+        .item-emoji {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+            transition: transform 0.2s;
+        }
+
+        .item-code {
+            background: var(--bg-color);
+            color: var(--accent-blue);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            font-weight: 600;
+        }
+
+        .interface-area {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .screen-container {
+            background: #000;
+            border-radius: 8px;
+            padding: 10px;
+            border: 2px solid #334155;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .lcd-screen {
+            font-family: 'Fira Code', monospace;
+            color: var(--success);
+            text-align: center;
+            font-size: 0.85rem;
+            text-shadow: 0 0 5px var(--success);
+            line-height: 1.4;
+        }
+
+        .glitch {
+            color: var(--danger);
+            text-shadow: 0 0 5px var(--danger);
+            animation: glitch-anim 0.2s infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 1px) }
+            40% { transform: translate(2px, -1px) }
+            60% { transform: translate(-1px, 2px) }
+            80% { transform: translate(1px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .btn-key {
+            background: #334155;
+            border: none;
+            color: white;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 12px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #0f172a, 0 5px 10px rgba(0,0,0,0.4);
+            transition: filter 0.2s;
+        }
+
+        .btn-key:hover { filter: brightness(1.2); }
+        .btn-key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #0f172a, 0 1px 2px rgba(0,0,0,0.4);
+        }
+
+        .dispenser {
+            background: #000;
+            height: 80px;
+            border-radius: 8px;
+            border-top: 4px solid #334155;
+            border-bottom: 8px solid #0f172a;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: inset 0 15px 20px rgba(0,0,0,0.8);
+        }
+
+        .dispenser::before {
+            content: 'PUSH';
+            position: absolute;
+            top: 10px;
+            color: rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .dispensed-item {
+            font-size: 3rem;
+            position: relative;
+            z-index: 10;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+            cursor: grab;
+        }
+
+        /* --- Diccionario / Tabla --- */
+        .dictionary {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--panel-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        th {
+            background: rgba(0,0,0,0.2);
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .math-symbol {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Concepto de Función</h1>
+        <div class="team-badge">
+            <span>Grupo:</span>
+            <strong>Nadia, More, Jenifer, Octavio, Rodrigo</strong>
+        </div>
+    </header>
+
+    <div class="layout">
+        <div class="info-panel">
+            <div class="glass-card explanation">
+                <h2>La Analogía de la Máquina</h2>
+                <p>Una <strong>función matemática</strong> es un mecanismo que transforma elementos de un conjunto de origen en un conjunto de destino.</p>
+                <p>La regla de oro es la <span class="highlight-text">Unicidad</span>: para un elemento de origen válido, la máquina <strong>siempre debe devolver el mismo resultado</strong>.</p>
+                <p>Usa el panel para probarlo. Nota cómo <code class="math-symbol">A1</code> y <code class="math-symbol">A2</code> pueden dar el mismo producto (eso es válido), pero si un mismo botón da cosas distintas, la relación se rompe.</p>
+            </div>
+
+            <div class="console-log">
+                <h3><span>Terminal Matemática</span> <span id="log-count">0 registros</span></h3>
+                <ul id="log-list">
+                    </ul>
+            </div>
+        </div>
+
+        <div class="machine-container">
+            
+            <div class="mode-toggle" id="mode-toggle">
+                <div class="mode-indicator"></div>
+                <button class="mode-btn active" onclick="setMode('correct')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    Función Válida
+                </button>
+                <button class="mode-btn" onclick="setMode('broken')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    Máquina Rota
+                </button>
+            </div>
+
+            <div class="vending-machine">
+                <div class="vending-glass">
+                    <div class="shelf"></div>
+                    <div class="shelf bottom"></div>
+                    
+                    <div class="item"><span class="item-emoji" id="prod-a1">🍫</span><span class="item-code">A1</span></div>
+                    <div class="item"><span class="item-emoji" id="prod-a2">🍫</span><span class="item-code">A2</span></div>
+                    <div class="item"><span class="item-emoji" id="prod-b1">🍟</span><span class="item-code">B1</span></div>
+                    <div class="item" style="grid-column: 2;"><span class="item-emoji" id="prod-b2">🥤</span><span class="item-code">B2</span></div>
+                </div>
+
+                <div class="interface-area">
+                    <div class="dispenser" id="dispenser">
+                        </div>
+                    
+                    <div>
+                        <div class="screen-container">
+                            <div class="lcd-screen" id="lcd">SISTEMA OK<br>ESPERANDO...</div>
+                        </div>
+                        <div class="keypad">
+                            <button class="btn-key" onclick="pressKey('A1')">A1</button>
+                            <button class="btn-key" onclick="pressKey('A2')">A2</button>
+                            <button class="btn-key" onclick="pressKey('B1')">B1</button>
+                            <button class="btn-key" onclick="pressKey('B2')">B2</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dictionary glass-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto Formal</th>
+                        <th>Analogía en la Interfaz</th>
+                        <th>Representación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Función (<span class="math-symbol">f</span>)</strong></td>
+                        <td>El circuito lógico de la expendedora.</td>
+                        <td>Asignación de un botón a un producto.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dominio (<span class="math-symbol">X</span>)</strong></td>
+                        <td>Los botones disponibles.</td>
+                        <td><span class="math-symbol">{A1, A2, B1, B2}</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Codominio (<span class="math-symbol">Y</span>)</strong></td>
+                        <td>Los productos dentro de la máquina.</td>
+                        <td><span class="math-symbol">{🍫, 🍟, 🥤}</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Variable (<span class="math-symbol">x</span>)</strong></td>
+                        <td>El botón que el usuario presiona.</td>
+                        <td>Ej: <span class="math-symbol">x = A1</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Imagen (<span class="math-symbol">f(x)</span>)</strong></td>
+                        <td>El producto despachado.</td>
+                        <td>Ej: <span class="math-symbol">f(A1) = 🍫</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Configuración inicial
+        let isBroken = false;
+        let isAnimating = false;
+        let logCount = 0;
+        
+        const products = { 'A1': '🍫', 'A2': '🍫', 'B1': '🍟', 'B2': '🥤' };
+        const chaosItems = ['🍫', '🍟', '🥤', '🍏', '🍕', '⚙️'];
+
+        // Elementos DOM
+        const lcd = document.getElementById('lcd');
+        const dispenser = document.getElementById('dispenser');
+        const logList = document.getElementById('log-list');
+        const logCounter = document.getElementById('log-count');
+        const toggleContainer = document.getElementById('mode-toggle');
+        const btns = document.querySelectorAll('.mode-btn');
+
+        // Animación de entrada inicial con GSAP
+        gsap.from(".glass-card", {
+            y: 30, opacity: 0, duration: 0.8, stagger: 0.2, ease: "power3.out"
+        });
+        gsap.from(".vending-machine", {
+            scale: 0.9, opacity: 0, duration: 1, ease: "elastic.out(1, 0.7)", delay: 0.3
+        });
+
+        function setMode(mode) {
+            if(isAnimating) return;
+            
+            isBroken = (mode === 'broken');
+            
+            // UI Toggle update
+            btns.forEach(b => b.classList.remove('active'));
+            if(isBroken) {
+                toggleContainer.classList.add('mode-broken');
+                btns[1].classList.add('active');
+                lcd.innerHTML = "<span class='glitch'>FALLO DE<br>UNICIDAD</span>";
+                gsap.to(lcd, {color: "var(--danger)", duration: 0.3});
+            } else {
+                toggleContainer.classList.remove('mode-broken');
+                btns[0].classList.add('active');
+                lcd.innerHTML = "SISTEMA OK<br>RESTAURADO";
+                lcd.classList.remove('glitch');
+                gsap.to(lcd, {color: "var(--success)", duration: 0.3});
+            }
+
+            // Limpiar dispenser
+            gsap.to(".dispensed-item", {
+                y: 50, opacity: 0, duration: 0.3, onComplete: () => dispenser.innerHTML = ''
+            });
+        }
+
+        function pressKey(code) {
+            if(isAnimating) return;
+            isAnimating = true;
+
+            // Animar el botón de la vitrina correspondiente (Feedback visual sutil)
+            const showcaseItem = document.getElementById(`prod-${code.toLowerCase()}`);
+            if(showcaseItem) {
+                gsap.to(showcaseItem, {
+                    scale: 1.2, y: -5, duration: 0.1, yoyo: true, repeat: 1
+                });
+            }
+
+            // Lógica Matemática
+            let result = '';
+            let isStable = true;
+
+            if(!isBroken) {
+                result = products[code];
+                lcd.innerHTML = `PROCESANDO<br>f(${code})`;
+                lcd.style.color = "var(--success)";
+            } else {
+                if(code === 'A1') {
+                    // Romper unicidad: A1 da cosas aleatorias
+                    result = chaosItems[Math.floor(Math.random() * chaosItems.length)];
+                    isStable = false;
+                } else {
+                    result = products[code];
+                }
+                lcd.innerHTML = `<span class='glitch'>ERR: MULTI<br>DESTINO</span>`;
+            }
+
+            // Despachar producto animado
+            dispenser.innerHTML = `<div class="dispensed-item">${result}</div>`;
+            const dispensedObj = dispenser.querySelector('.dispensed-item');
+            
+            gsap.fromTo(dispensedObj, 
+                { y: -100, scale: 0.5, rotation: (Math.random() - 0.5) * 45 },
+                { y: 0, scale: 1, rotation: 0, duration: 0.6, ease: "bounce.out", 
+                  onComplete: () => { isAnimating = false; } 
+                }
+            );
+
+            // Registrar en consola
+            addLog(code, result, isStable);
+        }
+
+        function addLog(code, result, isStable) {
+            logCount++;
+            logCounter.innerText = `${logCount} registro${logCount!==1?'s':''}`;
+
+            const li = document.createElement('li');
+            li.className = `log-entry ${isStable && !isBroken ? 'success' : 'error'}`;
+            
+            const time = new Date().toLocaleTimeString('es-AR', { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' });
+            
+            let logText = `<span style="color:var(--text-muted)">[${time}]</span> `;
+            if(isStable && !isBroken) {
+                logText += `Evaluación exitosa: <span style="color:#fff">f(${code}) = ${result}</span>`;
+            } else if (!isStable) {
+                logText += `Violación de unicidad: <span style="color:var(--danger)">f(${code}) = ${result}</span> (Fluctuante)`;
+            } else {
+                logText += `Evaluación riesgosa: <span style="color:#fff">f(${code}) = ${result}</span>`;
+            }
+            
+            li.innerHTML = logText;
+            
+            // Insertar arriba y animar
+            logList.insertBefore(li, logList.firstChild);
+            gsap.from(li, { x: -20, opacity: 0, duration: 0.4, ease: "power2.out" });
+
+            // Mantener máximo 50 logs para no saturar memoria
+            if(logList.children.length > 50) {
+                logList.removeChild(logList.lastChild);
+            }
+        }
+    </script>
+</body>
+</html>
