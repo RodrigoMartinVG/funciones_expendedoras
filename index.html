@@ -4,31 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Concepto de Función · Máquina Expendedora</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <style>
     /* ─── TOKENS ─────────────────────────────────── */
     :root {
-      --bg:          #07111d;
-      --surf:        #0d1e33;
-      --surf2:       #142540;
-      --surf3:       #1b3254;
-      --border:      rgba(255,255,255,0.06);
-      --border-acc:  rgba(56,189,248,0.22);
-      --text:        #eaf2ff;
-      --muted:       #6e92b8;
-      --acc:         #38bdf8;
-      --acc-glow:    rgba(56,189,248,0.3);
-      --ok:          #34d399;
-      --ok-glow:     rgba(52,211,153,0.3);
-      --bad:         #f87171;
-      --bad-glow:    rgba(248,113,113,0.3);
-      --gold:        #fbbf24;
-      --purple:      #a78bfa;
-      --font-d:      'Space Grotesk', sans-serif;
-      --font-b:      'Inter', sans-serif;
-      --font-m:      'JetBrains Mono', monospace;
-      --r:           18px;
+      --bg:          #1a1a1a;
+      --surf:        #1e1e1e;
+      --surf2:       #252526;
+      --surf3:       #3a3a3a;
+      --border:      #313131;
+      --border-acc:  rgba(79,193,255,0.30);
+      --text:        #d4d4d4;
+      --muted:       #858585;
+      --acc:         #4fc1ff;
+      --acc-glow:    rgba(79,193,255,0.25);
+      --ok:          #23d18b;
+      --ok-glow:     rgba(35,209,139,0.25);
+      --bad:         #f14c4c;
+      --bad-glow:    rgba(241,76,76,0.25);
+      --gold:        #dcdcaa;
+      --purple:      #c586c0;
+      --font-d:      'JetBrains Mono', ui-monospace, monospace;
+      --font-b:      'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+      --font-m:      'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+      --r:           8px;
     }
 
     /* ─── RESET & BASE ───────────────────────────── */
@@ -44,47 +44,50 @@
       flex-direction: column;
       align-items: center;
       background-image:
-        radial-gradient(ellipse 70% 45% at 18% 8%,  rgba(56,189,248,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 82% 85%, rgba(52,211,153,0.04) 0%, transparent 60%);
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 44px 44px, 44px 44px;
     }
 
     /* ─── HEADER ─────────────────────────────────── */
     header {
       text-align: center;
       margin-bottom: 3.5rem;
-      max-width: 680px;
+      max-width: 920px;
       animation: slideUp .7s ease-out both;
     }
     .eyebrow {
       font-family: var(--font-m);
       font-size: .72rem;
-      color: var(--acc);
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      margin-bottom: .8rem;
+      color: var(--muted);
+      letter-spacing: .04em;
+      margin-bottom: .9rem;
     }
+    .eyebrow::before { content: '// '; color: var(--ok); }
     h1 {
       font-family: var(--font-d);
-      font-size: clamp(2rem,5vw,3rem);
+      font-size: clamp(1.7rem,4vw,2.5rem);
       font-weight: 700;
-      letter-spacing: -.03em;
-      line-height: 1.1;
-      background: linear-gradient(130deg, #e8f4ff 0%, #60b8f5 45%, var(--purple) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      letter-spacing: -.01em;
+      line-height: 1.15;
+      color: var(--text);
       margin-bottom: 1.25rem;
     }
+    h1 .tok { color: var(--gold); }
+    h1 .pun { color: var(--muted); font-weight: 500; }
     .team-pill {
       display: inline-flex;
       align-items: center;
       gap: 9px;
       background: var(--surf);
-      padding: 8px 20px;
-      border-radius: 999px;
+      padding: 7px 18px;
+      border-radius: 6px;
       border: 1px solid var(--border);
-      font-size: .855rem;
+      font-size: .82rem;
+      font-family: var(--font-m);
       color: var(--muted);
+      max-width: 100%;
+      white-space: nowrap;
     }
     .team-pill strong { color: var(--text); font-weight: 500; }
     .pill-dot {
@@ -113,7 +116,7 @@
       background: var(--surf);
       border-radius: var(--r);
       border: 1px solid var(--border);
-      box-shadow: 0 20px 60px -15px rgba(0,0,0,.5);
+      box-shadow: 0 1px 0 rgba(255,255,255,.02) inset, 0 6px 20px rgba(0,0,0,.35);
       overflow: hidden;
     }
     .p2 { padding: 2rem; }
@@ -121,17 +124,18 @@
     /* ─── THEORY CARD ────────────────────────────── */
     .theory-card h2 {
       font-family: var(--font-d);
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 600;
+      letter-spacing: -.01em;
       display: flex;
       align-items: center;
       gap: 11px;
       margin-bottom: 1.25rem;
     }
     .acbar {
-      width: 3px; height: 22px;
-      background: linear-gradient(to bottom, var(--acc), var(--purple));
-      border-radius: 999px;
+      width: 3px; height: 18px;
+      background: var(--acc);
+      border-radius: 2px;
       flex-shrink: 0;
     }
     .theory-card p {
@@ -143,10 +147,10 @@
     .theory-card p:last-child { margin-bottom: 0; }
 
     .rule-box {
-      background: rgba(56,189,248,.06);
+      background: rgba(79,193,255,.06);
       border: 1px solid var(--border-acc);
       border-left: 3px solid var(--acc);
-      border-radius: 0 10px 10px 0;
+      border-radius: 0 6px 6px 0;
       padding: 1rem 1.25rem;
       margin: 1.25rem 0;
     }
@@ -162,8 +166,8 @@
       font-family: var(--font-m);
       font-size: .85em;
       color: var(--acc);
-      background: rgba(56,189,248,.1);
-      border: 1px solid rgba(56,189,248,.2);
+      background: rgba(79,193,255,.1);
+      border: 1px solid rgba(79,193,255,.2);
       padding: 1px 7px;
       border-radius: 5px;
     }
@@ -171,12 +175,12 @@
     /* validity examples */
     .vex { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.25rem; }
     .vbox {
-      border-radius: 11px;
+      border-radius: 6px;
       padding: 1rem;
       text-align: center;
     }
-    .vbox.ok  { background: rgba(52,211,153,.07); border: 1px solid rgba(52,211,153,.2); }
-    .vbox.bad { background: rgba(248,113,113,.07); border: 1px solid rgba(248,113,113,.2); }
+    .vbox.ok  { background: rgba(35,209,139,.07); border: 1px solid rgba(35,209,139,.2); }
+    .vbox.bad { background: rgba(241,76,76,.07); border: 1px solid rgba(241,76,76,.2); }
     .vbox-label {
       font-size: .7rem;
       font-weight: 700;
@@ -212,8 +216,8 @@
       padding: 3px 11px;
       border-radius: 999px;
     }
-    .sp-ok  { background: rgba(52,211,153,.12); color: var(--ok);  border: 1px solid rgba(52,211,153,.25); }
-    .sp-bad { background: rgba(248,113,113,.12); color: var(--bad); border: 1px solid rgba(248,113,113,.25); }
+    .sp-ok  { background: rgba(35,209,139,.12); color: var(--ok);  border: 1px solid rgba(35,209,139,.25); }
+    .sp-bad { background: rgba(241,76,76,.12); color: var(--bad); border: 1px solid rgba(241,76,76,.25); }
 
     #map-svg { width: 100%; height: auto; display: block; }
 
@@ -250,7 +254,7 @@
 
     .log-scroll {
       background: rgba(0,0,0,.3);
-      border-radius: 11px;
+      border-radius: 6px;
       height: 200px;
       overflow-y: auto;
       padding: .7rem;
@@ -303,8 +307,8 @@
       position: relative;
       display: flex;
       background: var(--surf);
-      padding: 5px;
-      border-radius: 12px;
+      padding: 4px;
+      border-radius: 8px;
       border: 1px solid var(--border);
       width: 100%;
       max-width: 400px;
@@ -315,15 +319,15 @@
       height: calc(100% - 10px);
       width: calc(50% - 5px);
       border-radius: 8px;
-      background: linear-gradient(135deg, rgba(56,189,248,.18), rgba(56,189,248,.08));
-      border: 1px solid rgba(56,189,248,.28);
+      background: linear-gradient(135deg, rgba(79,193,255,.18), rgba(79,193,255,.08));
+      border: 1px solid rgba(79,193,255,.28);
       transition: transform .4s cubic-bezier(.34,1.56,.64,1), background .4s, border-color .4s;
       z-index: 0;
     }
     .mode-toggle.broken .mode-ind {
       transform: translateX(calc(100% + 0px));
-      background: linear-gradient(135deg, rgba(248,113,113,.18), rgba(248,113,113,.08));
-      border-color: rgba(248,113,113,.28);
+      background: linear-gradient(135deg, rgba(241,76,76,.18), rgba(241,76,76,.08));
+      border-color: rgba(241,76,76,.28);
     }
     .mode-btn {
       flex: 1; z-index: 1;
@@ -343,40 +347,40 @@
       gap: 7px;
     }
     .mode-btn.active { color: var(--text); }
-    .mode-btn.v-btn.active { color: #93dcfc; }
-    .mode-btn.b-btn.active { color: #fca5a5; }
+    .mode-btn.v-btn.active { color: #9cdcfe; }
+    .mode-btn.b-btn.active { color: #f48771; }
 
     /* Vending Machine */
     .vending {
-      background: linear-gradient(175deg, var(--surf2) 0%, #0a1624 100%);
+      background: linear-gradient(175deg, var(--surf2) 0%, #141414 100%);
       width: 100%;
       max-width: 400px;
-      border-radius: 24px;
+      border-radius: 12px;
       padding: 20px;
       box-shadow:
-        0 40px 80px rgba(0,0,0,.6),
-        inset 0 1px 0 rgba(255,255,255,.07),
+        0 24px 60px rgba(0,0,0,.5),
+        inset 0 1px 0 rgba(255,255,255,.05),
         inset 0 -2px 0 rgba(0,0,0,.4);
       border: 1px solid var(--border);
       position: relative;
       transition: border-color .4s;
     }
-    .vending.broken-machine { border-color: rgba(248,113,113,.18); }
+    .vending.broken-machine { border-color: rgba(241,76,76,.18); }
 
     /* accent strip */
     .v-strip {
       height: 5px;
       border-radius: 999px;
       margin-bottom: 18px;
-      background: linear-gradient(90deg, transparent, rgba(56,189,248,.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(79,193,255,.3), transparent);
       transition: background .4s;
     }
-    .v-strip.broken-strip { background: linear-gradient(90deg, transparent, rgba(248,113,113,.35), transparent); }
+    .v-strip.broken-strip { background: linear-gradient(90deg, transparent, rgba(241,76,76,.35), transparent); }
 
     /* Vitrina / glass display */
     .vitrina {
       background: rgba(0,0,0,.5);
-      border-radius: 13px;
+      border-radius: 8px;
       padding: 14px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -458,10 +462,10 @@
       padding: 2px 8px;
       border-radius: 4px;
       margin-top: 4px;
-      border: 1px solid rgba(56,189,248,.2);
+      border: 1px solid rgba(79,193,255,.2);
       font-weight: 600;
     }
-    .vitem-code.broken-code { color: var(--bad); border-color: rgba(248,113,113,.25); }
+    .vitem-code.broken-code { color: var(--bad); border-color: rgba(241,76,76,.25); }
 
     .v-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--surf3), transparent); margin-bottom: 16px; }
 
@@ -491,7 +495,7 @@
       font-family: var(--font-m);
       position: absolute;
       bottom: 5px; right: 8px;
-      color: rgba(56,189,248,.12);
+      color: rgba(79,193,255,.12);
       font-size: .63rem;
       font-weight: 600;
       pointer-events: none;
@@ -501,9 +505,9 @@
     .ctrl-wrap { display: flex; flex-direction: column; gap: 9px; }
     .screen-wrap {
       background: #000;
-      border-radius: 8px;
+      border-radius: 5px;
       padding: 8px;
-      border: 2px solid #1a2840;
+      border: 2px solid #2a2a2a;
       height: 62px;
       display: flex;
       align-items: center;
@@ -529,21 +533,21 @@
 
     .keypad { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
     .btn-key {
-      background: linear-gradient(180deg, #1e3150 0%, #152440 100%);
-      border: 1px solid #2a4066;
-      border-bottom: 3px solid #0a1628;
-      color: #a8c4e0;
+      background: linear-gradient(180deg, #2f2f2f 0%, #242424 100%);
+      border: 1px solid #3a3a3a;
+      border-bottom: 3px solid #101010;
+      color: #cfcfcf;
       font-family: var(--font-m);
       font-weight: 600;
       font-size: .98rem;
       padding: 12px 0;
-      border-radius: 9px;
+      border-radius: 6px;
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0,0,0,.4);
-      transition: filter .15s, border-color .2s, box-shadow .15s;
+      transition: filter .15s, border-color .2s, box-shadow .15s, color .2s;
       letter-spacing: .04em;
     }
-    .btn-key:hover { filter: brightness(1.3); box-shadow: 0 6px 18px rgba(56,189,248,.15); border-color: rgba(56,189,248,.3); }
+    .btn-key:hover { filter: brightness(1.25); color: var(--acc); box-shadow: 0 6px 18px rgba(79,193,255,.12); border-color: rgba(79,193,255,.35); }
     .btn-key:active { transform: translateY(2px); border-bottom-width: 1px; }
 
     /* ─── NOTATION BAR ───────────────────────────── */
@@ -607,10 +611,10 @@
       padding: 2px 8px;
       border-radius: 5px;
     }
-    .mt-b { color: var(--acc);    background: rgba(56,189,248,.08); border: 1px solid rgba(56,189,248,.18); }
-    .mt-g { color: var(--ok);     background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.18); }
-    .mt-p { color: var(--purple); background: rgba(167,139,250,.08); border: 1px solid rgba(167,139,250,.18); }
-    .mt-r { color: var(--bad);    background: rgba(248,113,113,.08); border: 1px solid rgba(248,113,113,.18); }
+    .mt-b { color: var(--acc);    background: rgba(79,193,255,.08); border: 1px solid rgba(79,193,255,.18); }
+    .mt-g { color: var(--ok);     background: rgba(35,209,139,.08); border: 1px solid rgba(35,209,139,.18); }
+    .mt-p { color: var(--purple); background: rgba(197,134,192,.08); border: 1px solid rgba(197,134,192,.18); }
+    .mt-r { color: var(--bad);    background: rgba(241,76,76,.08); border: 1px solid rgba(241,76,76,.18); }
 
     /* ─── ANIMATIONS ─────────────────────────────── */
     @keyframes slideUp {
@@ -626,6 +630,7 @@
       .iface { grid-template-columns: 1fr; }
       .notate-div { display: none; }
       .notation-bar { gap: 1.2rem; }
+      .team-pill { white-space: normal; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -638,7 +643,7 @@
 <!-- ════════════════ HEADER ════════════════ -->
 <header>
   <p class="eyebrow">UAI · Licenciatura en Matemática · Laboratorio de Cálculo · Funciones</p>
-  <h1>Concepto de Función</h1>
+  <h1><span class="pun">f(</span>Concepto de <span class="tok">Función</span><span class="pun">)</span></h1>
   <div class="team-pill">
     <span class="pill-dot"></span>
     <span>Grupo:</span>
@@ -699,61 +704,61 @@
         <svg id="map-svg" viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arr-ok"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0,8 3,0 6" fill="#38bdf8" opacity=".7"/>
+              <polygon points="0 0,8 3,0 6" fill="#4fc1ff" opacity=".7"/>
             </marker>
             <marker id="arr-hi"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0,8 3,0 6" fill="#34d399"/>
+              <polygon points="0 0,8 3,0 6" fill="#23d18b"/>
             </marker>
             <marker id="arr-bad" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0,8 3,0 6" fill="#f87171"/>
+              <polygon points="0 0,8 3,0 6" fill="#f14c4c"/>
             </marker>
           </defs>
 
           <!-- Column labels -->
-          <text x="56"  y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#6e92b8" letter-spacing="1.2">DOMINIO</text>
-          <text x="170" y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11"  fill="#38bdf8" font-weight="600">f</text>
-          <text x="284" y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#6e92b8" letter-spacing="1.2">IMAGEN</text>
+          <text x="56"  y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#858585" letter-spacing="1.2">DOMINIO</text>
+          <text x="170" y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11"  fill="#4fc1ff" font-weight="600">f</text>
+          <text x="284" y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#858585" letter-spacing="1.2">IMAGEN</text>
 
           <!-- Domain nodes -->
-          <rect id="dn-A1" x="18" y="34" width="76" height="28" rx="7" fill="#142540" stroke="#38bdf8" stroke-width="1.3" stroke-opacity=".45"/>
-          <text x="56" y="52" text-anchor="middle" dominant-baseline="auto" font-family="'JetBrains Mono',monospace" font-size="13" fill="#93dcfc" font-weight="600">A1</text>
+          <rect id="dn-A1" x="18" y="34" width="76" height="28" rx="7" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="52" text-anchor="middle" dominant-baseline="auto" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">A1</text>
 
-          <rect id="dn-A2" x="18" y="76" width="76" height="28" rx="7" fill="#142540" stroke="#38bdf8" stroke-width="1.3" stroke-opacity=".45"/>
-          <text x="56" y="94" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#93dcfc" font-weight="600">A2</text>
+          <rect id="dn-A2" x="18" y="76" width="76" height="28" rx="7" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="94" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">A2</text>
 
-          <rect id="dn-B1" x="18" y="130" width="76" height="28" rx="7" fill="#142540" stroke="#38bdf8" stroke-width="1.3" stroke-opacity=".45"/>
-          <text x="56" y="148" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#93dcfc" font-weight="600">B1</text>
+          <rect id="dn-B1" x="18" y="130" width="76" height="28" rx="7" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="148" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">B1</text>
 
-          <rect id="dn-B2" x="18" y="170" width="76" height="28" rx="7" fill="#142540" stroke="#38bdf8" stroke-width="1.3" stroke-opacity=".45"/>
-          <text x="56" y="188" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#93dcfc" font-weight="600">B2</text>
+          <rect id="dn-B2" x="18" y="170" width="76" height="28" rx="7" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".45"/>
+          <text x="56" y="188" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" fill="#9cdcfe" font-weight="600">B2</text>
 
           <!-- Codomain nodes -->
-          <circle id="cn-choco" cx="284" cy="68"  r="21" fill="#142540" stroke="#38bdf8" stroke-width="1.3" stroke-opacity=".35"/>
+          <circle id="cn-choco" cx="284" cy="68"  r="21" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
           <text x="284" y="68"  text-anchor="middle" dominant-baseline="central" font-size="19">🍫</text>
 
-          <circle id="cn-fries" cx="284" cy="118" r="21" fill="#142540" stroke="#38bdf8" stroke-width="1.3" stroke-opacity=".35"/>
+          <circle id="cn-fries" cx="284" cy="118" r="21" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
           <text x="284" y="118" text-anchor="middle" dominant-baseline="central" font-size="19">🍟</text>
 
-          <circle id="cn-drink" cx="284" cy="174" r="21" fill="#142540" stroke="#38bdf8" stroke-width="1.3" stroke-opacity=".35"/>
+          <circle id="cn-drink" cx="284" cy="174" r="21" fill="#252526" stroke="#4fc1ff" stroke-width="1.3" stroke-opacity=".35"/>
           <text x="284" y="174" text-anchor="middle" dominant-baseline="central" font-size="19">🥤</text>
 
           <!-- Default arrows (dim, always present) -->
           <!-- A1 → 🍫 -->
           <line class="arr" id="a-A1" data-to-y="68"
             x1="96" y1="48" x2="261" y2="68"
-            stroke="#38bdf8" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+            stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
           <!-- A2 → 🍫 -->
           <line class="arr" id="a-A2" data-to-y="68"
             x1="96" y1="90" x2="261" y2="68"
-            stroke="#38bdf8" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+            stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
           <!-- B1 → 🍟 -->
           <line class="arr" id="a-B1" data-to-y="118"
             x1="96" y1="144" x2="261" y2="118"
-            stroke="#38bdf8" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+            stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
           <!-- B2 → 🥤 -->
           <line class="arr" id="a-B2" data-to-y="174"
             x1="96" y1="184" x2="261" y2="174"
-            stroke="#38bdf8" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
+            stroke="#4fc1ff" stroke-width="1.5" stroke-opacity=".4" marker-end="url(#arr-ok)"/>
 
           <!-- Extra arrow layer (for broken A1 second destination) -->
           <g id="extra-arrows"></g>
@@ -1068,7 +1073,7 @@
 
     // Dim all
     arrows.forEach(a => {
-      a.setAttribute('stroke', '#38bdf8');
+      a.setAttribute('stroke', '#4fc1ff');
       a.setAttribute('stroke-opacity', '.2');
       a.setAttribute('stroke-width', '1.5');
     });
@@ -1076,7 +1081,7 @@
     // Brighten this key's arrow
     const mainArr = document.getElementById(`a-${code}`);
     if (mainArr) {
-      mainArr.setAttribute('stroke', stable ? '#34d399' : '#f87171');
+      mainArr.setAttribute('stroke', stable ? '#23d18b' : '#f14c4c');
       mainArr.setAttribute('stroke-opacity', '.9');
       mainArr.setAttribute('stroke-width', '2.8');
     }
@@ -1084,7 +1089,7 @@
     // Highlight domain node
     const dn = document.getElementById(`dn-${code}`);
     if (dn) {
-      dn.setAttribute('stroke', stable ? '#34d399' : '#f87171');
+      dn.setAttribute('stroke', stable ? '#23d18b' : '#f14c4c');
       dn.setAttribute('stroke-opacity', '.9');
     }
 
@@ -1100,7 +1105,7 @@
         dash.setAttribute('y1', String(DOM_Y[code]));
         dash.setAttribute('x2', '261');
         dash.setAttribute('y2', String(actualToY));
-        dash.setAttribute('stroke', '#f87171');
+        dash.setAttribute('stroke', '#f14c4c');
         dash.setAttribute('stroke-width', '2.5');
         dash.setAttribute('stroke-opacity', '.85');
         dash.setAttribute('stroke-dasharray', '5 3');
@@ -1111,14 +1116,14 @@
         const cnMap = { 68:'cn-choco', 118:'cn-fries', 174:'cn-drink' };
         const targetNode = document.getElementById(cnMap[actualToY]);
         if (targetNode) {
-          targetNode.setAttribute('stroke', '#f87171');
+          targetNode.setAttribute('stroke', '#f14c4c');
           targetNode.setAttribute('stroke-opacity', '.9');
         }
 
         // Also mark the stored target node as conflicting
         const storedNode = document.getElementById(cnMap[existingToY]);
         if (storedNode) {
-          storedNode.setAttribute('stroke', '#f87171');
+          storedNode.setAttribute('stroke', '#f14c4c');
           storedNode.setAttribute('stroke-opacity', '.9');
         }
 
@@ -1126,7 +1131,7 @@
           if (dash.parentNode) dash.remove();
           [targetNode, storedNode].forEach(n => {
             if (n) {
-              n.setAttribute('stroke', '#38bdf8');
+              n.setAttribute('stroke', '#4fc1ff');
               n.setAttribute('stroke-opacity', '.35');
             }
           });
@@ -1138,24 +1143,24 @@
       const toY   = COD_Y[result];
       const cnEl  = document.getElementById(cnByY[toY]);
       if (cnEl) {
-        cnEl.setAttribute('stroke', '#34d399');
+        cnEl.setAttribute('stroke', '#23d18b');
         cnEl.setAttribute('stroke-opacity', '.9');
       }
       setTimeout(() => {
-        if (cnEl) { cnEl.setAttribute('stroke', '#38bdf8'); cnEl.setAttribute('stroke-opacity', '.35'); }
+        if (cnEl) { cnEl.setAttribute('stroke', '#4fc1ff'); cnEl.setAttribute('stroke-opacity', '.35'); }
       }, 1600);
     }
 
     // Reset after delay
     setTimeout(() => {
       resetArrows();
-      if (dn) { dn.setAttribute('stroke', '#38bdf8'); dn.setAttribute('stroke-opacity', '.45'); }
+      if (dn) { dn.setAttribute('stroke', '#4fc1ff'); dn.setAttribute('stroke-opacity', '.45'); }
     }, 1800);
   }
 
   function resetArrows() {
     document.querySelectorAll('#map-svg .arr').forEach(a => {
-      a.setAttribute('stroke', '#38bdf8');
+      a.setAttribute('stroke', '#4fc1ff');
       a.setAttribute('stroke-opacity', '.4');
       a.setAttribute('stroke-width', '1.5');
       a.setAttribute('marker-end', 'url(#arr-ok)');
@@ -1184,9 +1189,9 @@
     li.className = `log-entry ${(stable || !broken) ? 'ok' : 'bad'}`;
 
     if (stable || !broken) {
-      li.innerHTML = `<span style="color:var(--muted)">[${time}]</span> Evaluación → <span style="color:#93dcfc">f(${code})</span> = <span style="color:var(--text)">${result}</span>`;
+      li.innerHTML = `<span style="color:var(--muted)">[${time}]</span> Evaluación → <span style="color:#9cdcfe">f(${code})</span> = <span style="color:var(--text)">${result}</span>`;
     } else {
-      li.innerHTML = `<span style="color:var(--muted)">[${time}]</span> <span style="color:var(--bad)">Violación</span> → <span style="color:#93dcfc">f(${code})</span> ≠ ${PRODUCTS[code]} · dio <span style="color:var(--bad)">${result}</span>`;
+      li.innerHTML = `<span style="color:var(--muted)">[${time}]</span> <span style="color:var(--bad)">Violación</span> → <span style="color:#9cdcfe">f(${code})</span> ≠ ${PRODUCTS[code]} · dio <span style="color:var(--bad)">${result}</span>`;
     }
 
     logList.insertBefore(li, logList.firstChild);
